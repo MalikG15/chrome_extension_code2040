@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "CODE2040 Tech Assessment",
+  "description": "This connects to CODE2040's endpoint from a different origin",
+  "version": "1.0",
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
+
+  "browser_action": {
+    "default_icon": "code2040.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "http://challenge.code2040.org/*" 
+  ]
+}
