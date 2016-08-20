@@ -16,9 +16,8 @@ var xml = new XMLHttpRequest();
 var url = 'http://challenge.code2040.org/api/register';
 
 xml.onreadystatechange = function() {
-    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-    	alert("hello");
-        $("#success").append("<p>You have connected to CODE2040's API</p>");	
+    if (xml.readyState == 4 && xml.status == 200) {
+        $("#success").append("<p>You have connected to CODE2040's API and registered</p>");	
     }
 };
 
