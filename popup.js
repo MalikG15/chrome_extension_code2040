@@ -24,4 +24,4 @@ xml.onreadystatechange = function() {
 
 xml.open("POST", url);
 xml.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-xml.send(JSON.stringify({"token": token_key.token, "github": "https://github.com/MalikG15/CODE2040_1"}));
+xml.send(JSON.stringify({"token": token_key.token, "github": "https://github.com/MalikG15/chrome_extension_code2040"}));
