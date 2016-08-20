@@ -28,26 +28,34 @@ function register() {
 }
 
 function reverseString(string) {
-	var reversedString = "";
-	for (var x = string.length() - 1; x > 0 ; x--) {
-		reverseString += string.charAt(x);
+	var stringReversed = "";
+	for (var x = string.length; x >= 0; x--) {
+		stringReversed += string.charAt(x);
 	}
-	return reverseString;
+	return stringReversed;
 }
 
-function reverseString() {
+function secondChallenge() {
 	var xml = new XMLHttpRequest();
 	var url = 'http://challenge.code2040.org/api/reverse';
 
-	xml.onreadystatechange = function(data) {
+	var string;
+
+
+	xml.onreadystatechange = function() {
 	    if (xml.readyState == 4 && xml.status == 200) {
-	        $("#success").append("<p> The word given by CODE2040 is " + xml.responseText + "</p>");	
+	    	string = xml.responseText;
+	        $("#success").append("<p> The word given by CODE2040 is " + string + "</p>");	
 	    }
 	};
 
 	xml.open("POST", url, false);
 	xml.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	xml.send(JSON.stringify({"token": token_key.token}));
+	xml.abort();
+
+	$("#success").append("<p style='color:blue;'> The word given by CODE2040 reversed is " + reverseString(string) + "</p>");	
 }
 
-reverseString();	
+
+secondChallenge();	
