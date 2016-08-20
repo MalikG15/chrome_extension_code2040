@@ -29,7 +29,7 @@ function register() {
 
 function reverseString(string) {
 	var stringReversed = "";
-	for (var x = string.length; x >= 0; x--) {
+	for (var x = string.length - 1; x >= 0; x--) {
 		stringReversed += string.charAt(x);
 	}
 	return stringReversed;
@@ -54,7 +54,26 @@ function secondChallenge() {
 	xml.send(JSON.stringify({"token": token_key.token}));
 	xml.abort();
 
-	$("#success").append("<p style='color:blue;'> The word given by CODE2040 reversed is " + reverseString(string) + "</p>");	
+	var result = reverseString(string);
+
+	$("#success").append("<p style='color:blue;'> The word given by CODE2040 reversed is " + result + "</p>");	
+	sendReversedString(result);
+}
+
+function sendReversedString(string) {
+	var xml = new XMLHttpRequest();
+	var url = 'http://challenge.code2040.org/api/reverse/validate';
+
+	xml.onreadystatechange = function() {
+	    if (xml.readyState == 4 && xml.status == 200) {
+	    	$("#success").append("<p>The reversed string has been sent!</p>");	
+	    }
+	};
+
+	xml.open("POST", url, false);
+	xml.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xml.send(JSON.stringify({"token": token_key.token, "string": string}));
+	xml.abort();
 }
 
 
