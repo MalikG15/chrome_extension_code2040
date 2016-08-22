@@ -86,7 +86,7 @@ function needleInHaystack() {
 		}
 	}
 	$("#success").append("<p>The needle is located at " + location + " in the haystack</p>");
-	validateNeedleLocation("http://challenge.code2040.org/api/haystack/validate", "needle", location);
+	validateNeedleLocation("http://challenge.code2040.org/api/haystack/validate", location);
 }
 
 // Validate response
@@ -154,15 +154,23 @@ function validateStringsWithoutPrefix(apiEndPoint, result) {
 //Fifth challenge
 function addTimeInterval() {
 	var raw_response = getResponseForChallenge("http://challenge.code2040.org/api/dating");
+
+
 	var response = JSON.parse(raw_response);
 	
 	var secondsToDate = Date.parse(response.datestamp);
+
 	$("#success").append("<p>The date in ISO format is " + response.datestamp + "</p>");
-	var totalsecondsToDate = new Date(secondsToDate + response.interval);	
-	$("#success").append("<p>The new date in ISO format is " + totalsecondsToDate.toISOString() + "</p>");
-	var date = new Date();
-	validateNewDate("http://challenge.code2040.org/api/dating/validate", date.toISOString());
-	//alert(response.datestamp + secondsToDate + "\n" + response.interval + "\n" + totalsecondsToDate);
+	
+	var totalsecondsToDate = new Date(secondsToDate + (response.interval*1000));
+
+	totalsecondsToDate = (totalsecondsToDate.toISOString()).replace('.000', '');
+
+	$("#success").append("<p>The new date in ISO format is " + totalsecondsToDate + "</p>");
+
+	
+
+	validateNewDate("http://challenge.code2040.org/api/dating/validate", totalsecondsToDate);
 }
 
 // Validate response 
@@ -175,14 +183,11 @@ function validateNewDate(apiEndPoint, result) {
 	    if (xml.readyState == 4 && xml.status == 200) {
 	    	$("#success").append("<p>The new date has been sent to CODE2040!</p>");
 	    }
-	    //else {
-	    ///	console.log(xml);
-	    //}
 	};
-	//alert(JSON.stringify({"token": token_key.token, datestamp: result}));
+	
 	xml.open("POST", url, false);
-	xml.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	//console.log(JSON.stringify({"token": token_key.token, datestamp: result}));
+	xml.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
 	xml.send(JSON.stringify({"token": token_key.token, datestamp: result}));
 	xml.abort();
 };
