@@ -1,4 +1,4 @@
-// Registering with CODE2040 API
+// Registers my github repo location with CODE2040
 function register() {
 	var xml = new XMLHttpRequest();
 	var url = 'http://challenge.code2040.org/api/register';
@@ -14,7 +14,9 @@ function register() {
 	xml.send(JSON.stringify({"token": token_key.token, "github": "https://github.com/MalikG15/chrome_extension_code2040"}));
 }
 
-// Send token with given url for data
+// Recieves response from the API
+// -> This was a redudant process for the challenges so I dedicated a function 
+// -> to getting a response for the API to a specific URI by posting token.
 function getResponseForChallenge(apiEndPoint) {
 	var xml = new XMLHttpRequest();
 	var url = apiEndPoint;
@@ -35,7 +37,9 @@ function getResponseForChallenge(apiEndPoint) {
 	return response;
 }
 
-///////////////////////////////// All for Reversing the String \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//--------------------------------------------Reverse String Challenge----------------------------------------------------------\\
+
+// Reverses a given string into a new string in memory.
 function reverseString(string) {
 	var stringReversed = "";
 	for (var x = string.length - 1; x >= 0; x--) {
@@ -44,6 +48,9 @@ function reverseString(string) {
 	return stringReversed;
 }
 
+// Gets the string from the API, then updates
+// HTML to show the status and then sends the 
+// reversed string.
 function reversedStringChallenge() {
 	var stringToReverse = getResponseForChallenge("http://challenge.code2040.org/api/reverse");
 	$("#success").append("<p>The string sent by CODE2040 is" + stringToReverse + "</p>");	
@@ -52,6 +59,7 @@ function reversedStringChallenge() {
 	sendReversedString(reversedString);
 }
 
+// Sends the reversed string to the API 
 function sendReversedString(string) {
 	var xml = new XMLHttpRequest();
 	var url = 'http://challenge.code2040.org/api/reverse/validate';
@@ -67,11 +75,13 @@ function sendReversedString(string) {
 	xml.send(JSON.stringify({"token": token_key.token, "string": string}));
 	xml.abort();
 }
-/////////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////// All for Finding Needle in Haystack \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//--------------------------------------------Needle In Haystack Challenge---------------------------------------------------------\\
 
-// Third challenge
+// Gets the response for a needle and haystack
+// then iterates through the haystack to the find
+// the needle. Once the needle is found, we validate
+// it's location.
 function needleInHaystack() {
 	var raw_response = getResponseForChallenge("http://challenge.code2040.org/api/haystack")
 	var response = JSON.parse(raw_response);
@@ -83,13 +93,14 @@ function needleInHaystack() {
 	for (var x = 0; x < haystack.length; x++) {
 		if (needle === haystack[x]) {
 			location = x;
+			break;
 		}
 	}
 	$("#success").append("<p>The needle is located at " + location + " in the haystack</p>");
 	validateNeedleLocation("http://challenge.code2040.org/api/haystack/validate", location);
 }
 
-// Validate response
+// Sends needle location
 function validateNeedleLocation(apiEndPoint, result) {
 	var xml = new XMLHttpRequest();
 	var url = apiEndPoint;
@@ -107,11 +118,13 @@ function validateNeedleLocation(apiEndPoint, result) {
 	xml.abort();
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//--------------------------------------------Words Without Prefix Challenge------------------------------------------------------------\\
 
-///////////////////////////////// All for Finding Strings Without a Given Prefix \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-// Fourth challenge 
+// Gets the prefix and the words
+// then filters the array of words
+// using javascripts .filter() method
+// and then returns an array satisfying
+// that condition. 
 function checkPrefix() {
 	var raw_response = getResponseForChallenge("http://challenge.code2040.org/api/prefix");
 	var response = JSON.parse(raw_response);
@@ -129,7 +142,7 @@ function checkPrefix() {
     validateStringsWithoutPrefix("http://challenge.code2040.org/api/prefix/validate", stringsWithoutPrefix);
 }
 
-// Validate response 
+// Sends array of words without the given prefix
 function validateStringsWithoutPrefix(apiEndPoint, result) {
 	var xml = new XMLHttpRequest();
 	var url = apiEndPoint;
@@ -147,11 +160,14 @@ function validateStringsWithoutPrefix(apiEndPoint, result) {
 	xml.abort();
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//--------------------------------------------Add Time Interval Challenge---------------------------------------------------------\\
 
-///////////////////////////////// All for Changing the Given Time\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-//Fifth challenge
+// Gets the ISO datestamp and the interval
+// then changes the ISO datestamp to milliseconds
+// then creates a new date object while converting
+// the interval to milliseconds and then add them together.
+// The total time date object is then coverted to ISO and the
+// '.000' substring is removed.
 function addTimeInterval() {
 	var raw_response = getResponseForChallenge("http://challenge.code2040.org/api/dating");
 
@@ -173,7 +189,7 @@ function addTimeInterval() {
 	validateNewDate("http://challenge.code2040.org/api/dating/validate", totalsecondsToDate);
 }
 
-// Validate response 
+// Sends the ISO String to the API
 function validateNewDate(apiEndPoint, result) {
 	var xml = new XMLHttpRequest();
 	var url = apiEndPoint;
@@ -192,6 +208,8 @@ function validateNewDate(apiEndPoint, result) {
 	xml.abort();
 };
 
+// Invoking a certain challenge function
+// such as the fifth one.
 addTimeInterval();
 
 
